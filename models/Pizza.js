@@ -6,7 +6,9 @@ const PizzaModel = {
   findAll: () => pizzas,
   create: (pizza) => {
     pizzas.push(pizza);
+    console.time()
     fs.writeFileSync("./database/pizzas.json", JSON.stringify(pizzas));
+    console.timeEnd()
   },
   update: (id, { sabor, categoria, preco }) => {
     const pizzaEncontrada = PizzaModel.findById(id);
@@ -21,14 +23,28 @@ const PizzaModel = {
   },
   destroy: (id) => {
     // opção 1
-    // const index = pizzas.findIndex((pizza) => pizza.id === id);
-    // pizzas.splice(index, 1);
+
+    const index = pizzas.findIndex((pizza) => pizza.id === id);
+    pizzas.splice(index, 1);
+    fs.writeFileSync("./database/pizzas.json", JSON.stringify(pizzas));
+    
     // fs.writeFileSync("./database/pizzas.json", JSON.stringify(pizzas));
 
     //opção 2
-    const newPizzas = pizzas.filter((pizza) => pizza.id !== id);
+    // const newPizzas = pizzas.filter((pizza) => pizza.id !== id);
 
-    return fs.writeFileSync("./database/pizzas.json", JSON.stringify(newPizzas));
+    // return new Promise((resolve, reject) => {
+
+    //   if (PizzaModel.findById(id)){
+    //     const newPizzas = pizzas.filter((pizza) => pizza.id !== id);
+    //     fs.writeFileSync("./database/pizzas.json", JSON.stringify(newPizzas));
+
+    //     setTimeout(() => resolve("Pizza apagada"), 100);
+    //     ;
+    //   } else {
+    //     reject("Pizza não encontrada");
+    //   }
+    // });
   },
 };
 

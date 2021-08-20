@@ -11,10 +11,10 @@
 <body>
   <h1><%= title %></h1>
   <button type="button">
-   <a href="/pizzas/criar">Nova Pizza</a> 
+   <a href="/pizzas/cadastrar">Nova Pizza</a> 
   </button>
   <% pizzas.forEach(pizza => { %>
-    <%- include("partials/pizza", { pizza }) %>
+    <%- include("partials/pizza", { pizza, element: include("partials/test") }) %>
   <% }) %>
   
 </body>

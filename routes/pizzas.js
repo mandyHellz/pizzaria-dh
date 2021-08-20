@@ -1,28 +1,50 @@
-const express = require("express");
-const { restart } = require("nodemon");
-const router = express.Router();
+const { Router } = require("express");
+
 const PizzaController = require("../controllers/PizzaController");
 const verificarIdMiddleware = require("../middlewares/verificarId");
-const PizzaModel = require("../models/Pizza");
 
-router.get("/", PizzaController.listar);
+const router = Router();
 
-router.get("/criar", (req, res) => {
+router.get("/", function(request, response) {
+  const pizzas = PizzaController.listarTodos();
+  return response.render("pizzas", { pizzas, title: "Homepage" });
+});
+
+router.get("/cadastrar", (req, res) => {
   res.render("criarNovaPizza", { title: "Criar nova pizza"})
 });
 
 router.get("/editar/:id", (req, res) => {
   const { id } = req.params;
-  const pizza = PizzaModel.findById(id);
+  const pizza = PizzaController.buscarPizzaPeloId(id);
   res.render("editarPizza", { pizza })
 });
 
 router.get("/:id", verificarIdMiddleware, PizzaController.buscarPizzaPeloId);
 
-router.post("/", PizzaController.criarUmaPizza);
+router.post("/", function(request, response) {
+  const { sabor, categoria, preco } = request.body;
 
-router.put("/:id", verificarIdMiddleware, PizzaController.editarUmaPizza);
+  PizzaController.criarUmaPizza(sabor, categoria, preco);
 
-router.delete("/:id", verificarIdMiddleware, PizzaController.deletarUmaPizza);
+  response.status(201).redirect("/pizzas");
+});
+
+router.put("/:id", verificarIdMiddleware, function(request, response) {
+  const { id } = request.params;
+  const { sabor, categoria, preco } = request.body;
+
+  PizzaController.editarUmaPizza(id, sabor, categoria, preco)
+
+  return response.redirect("/pizzas");
+});
+
+router.delete("/:id", verificarIdMiddleware, function(request, response) {
+  const { id } = request.params;
+
+  PizzaController.deletarUmaPizza(id);
+
+  return response.redirect("/pizzas");
+});
 
 module.exports = router;
