@@ -5,8 +5,9 @@ const verificarIdMiddleware = require("../middlewares/verificarId");
 
 const router = Router();
 
-router.get("/", function(request, response) {
-  const pizzas = PizzaController.listarTodos();
+router.get("/", async function(request, response) {
+  const pizzas = await PizzaController.listarTodos();
+
   return response.render("pizzas", { pizzas, title: "Homepage" });
 });
 
@@ -22,10 +23,10 @@ router.get("/editar/:id", (req, res) => {
 
 router.get("/:id", verificarIdMiddleware, PizzaController.buscarPizzaPeloId);
 
-router.post("/", function(request, response) {
+router.post("/", async function(request, response) {
   const { sabor, categoria, preco } = request.body;
 
-  PizzaController.criarUmaPizza(sabor, categoria, preco);
+  await PizzaController.criarUmaPizza(sabor, categoria, preco);
 
   response.status(201).redirect("/pizzas");
 });
@@ -39,10 +40,10 @@ router.put("/:id", verificarIdMiddleware, function(request, response) {
   return response.redirect("/pizzas");
 });
 
-router.delete("/:id", verificarIdMiddleware, function(request, response) {
+router.delete("/:id", verificarIdMiddleware, async function(request, response) {
   const { id } = request.params;
 
-  PizzaController.deletarUmaPizza(id);
+  await PizzaController.deletarUmaPizza(id);
 
   return response.redirect("/pizzas");
 });

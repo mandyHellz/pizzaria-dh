@@ -5,7 +5,6 @@ const PizzaController = {
   buscarPizzaPeloId: (id) => {
     try {
       const pizza = PizzaModel.findById(id);
-      console.log(pizza)
   
       return pizza;
     } catch (error) {
@@ -13,17 +12,7 @@ const PizzaController = {
     }
   },
   listarTodos: () => PizzaModel.findAll(),
-  criarUmaPizza: (sabor, categoria, preco) => {
-    const pizza = PizzaModel.create({
-      id: v4(),
-      sabor,
-      categoria,
-      deleted: false,
-      preco: Number(preco)
-    });
-
-    return pizza;
-  },
+  criarUmaPizza: (sabor, categoria, preco) => PizzaModel.criarUmaPizza({ sabor, categoria, preco: Number(preco) }),
   editarUmaPizza: (id, sabor, categoria, preco) => {
     const pizza = PizzaModel.update(id, {
       sabor,
