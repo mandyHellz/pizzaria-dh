@@ -5,22 +5,22 @@ const PizzaController = {
   buscarPizzaPeloId: (id) => {
     try {
       const pizza = PizzaModel.findById(id);
-  
+
       return pizza;
     } catch (error) {
       return res.status(400).json({ error });
     }
   },
   listarTodos: () => PizzaModel.findAll(),
-  criarUmaPizza: (sabor, categoria, preco) => PizzaModel.criarUmaPizza({ sabor, categoria, preco: Number(preco) }),
+  criarUmaPizza: (sabor, categoria, preco) => {
+    return PizzaModel.criarUmaPizza({ sabor, categoria, preco: Number(preco) })
+  },
   editarUmaPizza: (id, sabor, categoria, preco) => {
-    const pizza = PizzaModel.update(id, {
+    return PizzaModel.update(id, {
       sabor,
       categoria,
       preco,
     });
-
-    return pizza;
   },
   deletarUmaPizza: (id) => PizzaModel.destroy(id),
 };
