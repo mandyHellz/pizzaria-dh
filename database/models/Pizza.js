@@ -1,16 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const Pizza = sequelize.define('Pizza', {
-    id: {
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-      type: DataTypes.INTEGER.UNSIGNED
-    },
     sabor: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    categoria: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -22,8 +12,19 @@ module.exports = function(sequelize, DataTypes) {
     preco: {
       type: DataTypes.DOUBLE,
       allowNull: false,
+    },
+    categoria_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
     }
   });
+
+  Pizza.associate = models => {
+    Pizza.belongsTo(models.Categoria, {
+      foreignKey: 'categoria_id',
+      as: 'categoria'
+    })
+  };
 
   return Pizza;
 }
