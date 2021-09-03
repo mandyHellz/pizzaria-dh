@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { Categoria } = require('../database/models');
 
 const PizzaController = require("../controllers/PizzaController");
+const CategoriaController = require("../controllers/CategoriaController");
 const verificarIdMiddleware = require("../middlewares/verificarId");
 
 const router = Router();
@@ -13,15 +14,18 @@ router.get("/", async function (request, response) {
 });
 
 router.get("/cadastrar", async (req, res) => {
-  const categorias = await Categoria.findAll();
+  const categorias = await CategoriaController.listarTodos();
 
   res.render("criarNovaPizza", { title: "Criar nova pizza", categorias })
 });
 
 router.get("/editar/:id", async (req, res) => {
   const { id } = req.params;
+
+  const categorias = await CategoriaController.listarTodos();
   const pizza = await PizzaController.buscarPizzaPeloId(id);
-  res.render("editarPizza", { pizza })
+
+  res.render("editarPizza", { pizza, categorias })
 });
 
 router.get("/:id", verificarIdMiddleware, PizzaController.buscarPizzaPeloId);

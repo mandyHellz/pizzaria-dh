@@ -13,6 +13,7 @@ const PizzaController = {
   },
   listarTodos: () => PizzaModel.findAll(),
   criarUmaPizza: (sabor, categoria, preco) => {
+    console.log(sabor)
     return PizzaModel.criarUmaPizza({ sabor, categoria, preco: Number(preco) })
   },
   editarUmaPizza: (id, sabor, categoria, preco) => {

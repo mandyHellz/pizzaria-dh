@@ -3,7 +3,7 @@ const { Pizza } = require('../database/models');
 const PizzaModel = {
   findById: (id) => Pizza.findByPk(id),
   findAll: () => Pizza.findAll(),
-  criarUmaPizza: ({ sabor, categoria, preco }) => Pizza.create({ sabor, categoria, preco }),
+  criarUmaPizza: ({ sabor, categoria: categoria_id, preco }) => Pizza.create({ sabor, categoria_id, preco }),
   update: (id, { sabor, categoria, preco }) => {
     return Pizza.update({
       sabor,
